@@ -1,0 +1,13 @@
+name: Check rules
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  five-categories:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: All five Jinx categories are present
+        run: bash scripts/check-rules.sh The_Rules.md

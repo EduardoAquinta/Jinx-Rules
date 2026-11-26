@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Blocks a commit if the staged rules file is missing a category.
+# Enable once per clone with:  git config core.hooksPath .githooks
+set -euo pipefail
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+# Check the staged version, not the working copy.
+if ! git show :The_Rules.md > "$tmp" 2>/dev/null; then
+  echo "✗ The_Rules.md is not staged/tracked" >&2
+  exit 1
+fi
+"$(git rev-parse --show-toplevel)/scripts/check-rules.sh" "$tmp"
